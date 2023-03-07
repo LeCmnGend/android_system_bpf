@@ -488,10 +488,13 @@ static void applyRelo(void* insnsPtr, Elf64_Addr offset, int fd) {
     insnIndex = offset / sizeof(struct bpf_insn);
     insn = &insns[insnIndex];
 
-    ALOGD(
-        "applying relo to instruction at byte offset: %d, \
-	       insn offset %d , insn %lx\n",
-        (int)offset, (int)insnIndex, *(unsigned long*)insn);
+    // Occasionally might be useful for relocation debugging, but pretty spammy
+    if (0) {
+        ALOGD(
+            "applying relo to instruction at byte offset: %d, \
+	           insn offset %d , insn %lx\n",
+            (int)offset, (int)insnIndex, *(unsigned long*)insn);
+    }
 
     if (insn->code != (BPF_LD | BPF_IMM | BPF_DW)) {
         ALOGE("Dumping all instructions till ins %d\n", insnIndex);
